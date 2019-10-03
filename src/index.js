@@ -29,11 +29,13 @@ const mvpData = {
 };
 
 const config = {
-	height: 500,
-	width: 500,
+	height: 600,
+	width: 600,
 	margin: 30,
-	labelOffset: 5,
-}
+	labelOffset: 15,
+	minRadius: 50,
+	color: "#E6E6E6"
+};
 
 class RadarChart {
 	constructor(height, width, data) {
@@ -61,48 +63,50 @@ class RadarChart {
 	}
 
 	_drawCircles() {
-		for (let i = 0; i <= this.layers; i++) {
-			const radius = (((this.height / this.layers) / 2) * i) - config.margin
+		for (let i = 0; i <= this.layers + 1; i++) {
+			this.circleStep = (((this.height/ 2) - config.margin) / this.layers)
+			const radius = this.circleStep * i
+
 			this.svg
 				.append("circle")
-				.attr("stroke", "black")
+				.attr("stroke", config.color)
 				.attr("fill", "transparent")
 				.attr("cx", this.origin.x)
 				.attr("cy", this.origin.y)
-				.attr("r", radius);
+				.attr("r", radius - config.margin);
 		}
 	}
 
 	_drawAxes() {
 		for (let i = 0; i <= this.axes.length - 1; i++) {
 			const angle = (360 / this.axes.length) * (i + 1);
-			const axis = this.axes[i]
+			const axis = this.axes[i];
 			this._drawLines(angle);
 			this._drawLabel(angle, axis.name);
 			this._drawItems(angle, axis.items);
 		}
 	}
 
-	_drawItems(angle, items){
-		// this.svg
-		// 	.
-		var labelX = this.origin.x + (this.height / 2) * Math.sin(0);
-		var labelY = (this.origin.y - (this.height / 2) * Math.cos(0)) + config.margin - config.labelOffset;
-		
-		this.svg
-			.data(items)
-			.enter()
-			.append("text")
-			.attr("x", labelX)
-			.attr("y", labelY )
-			.attr('fill', 'red')
-			.attr('text-anchor', 'middle')
-			.style("font-family", "sans-serif")
-			.text('Labeled')
-			.attr(
-				"transform",
-				`rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
-			);
+	_drawItems(angle, items) {
+		items.forEach((item, index) => {
+			var labelX = this.origin.x + (this.height / 2) * Math.sin(0);
+			const offset = 20
+			var labelY = this.origin.y - index * this.circleStep - offset;
+
+			this.svg
+				.append("text")
+				.attr("x", labelX)
+				.attr("y", labelY)
+				.attr("fill", "black")
+				.attr("text-anchor", "middle")
+				.style("font-family", "sans-serif")
+				.style("font-size", "12px")
+				.text(item)
+				.attr(
+					"transform",
+					`rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
+				);
+		});
 	}
 
 	_drawLines(angle) {
@@ -111,8 +115,8 @@ class RadarChart {
 			.attr("x1", this.origin.x)
 			.attr("y1", this.origin.y)
 			.attr("x2", this.origin.x)
-			.attr("y2", 0 + config.margin)
-			.style("stroke", "grey")
+			.attr("y2", 0 + (this.circleStep / 2))
+			.style("stroke", config.color)
 			.style("stroke-width", "1px")
 			.attr(
 				"transform",
@@ -122,16 +126,21 @@ class RadarChart {
 
 	_drawLabel(angle, name) {
 		var labelX = this.origin.x + (this.height / 2) * Math.sin(0);
-		var labelY = (this.origin.y - (this.height / 2) * Math.cos(0)) + config.margin - config.labelOffset;
-		
+		var labelY =
+			this.origin.y -
+			(this.height / 2) * Math.cos(0) +
+			config.margin -
+			config.labelOffset;
+
 		this.svg
 			.append("text")
 			.attr("x", labelX)
-			.attr("y", labelY )
-			.attr('fill', 'black')
-			.attr('text-anchor', 'middle')
+			.attr("y", labelY)
+			.attr("fill", "black")
+			.attr("text-anchor", "middle")
 			.style("font-family", "sans-serif")
-			.style("text-transform", "capitalize")
+			.style("font-weight", "bold")
+			.style("text-transform", "uppercase")
 			.text(name)
 			.attr(
 				"transform",
