@@ -59,39 +59,25 @@ class RadarChart {
 		let layers = 0;
 		for (let i = 0; i < this.axes.length; i++) {
 			const currentAxis = this.axes[i].items.length;
-			layers = currentAxis > layers ? currentAxis : layers;
+			const isCurrentAxisBigger = currentAxis > layers
+			layers = isCurrentAxisBigger ? currentAxis : layers;
 		}
 		this.layers = layers;
 	}
 
 	_drawCircles() {
+		this._calcLayers()
+
 		for (let i = 0; i <= this.layers + 1; i++) {
 			this.circleStep = (this.height / 2 - config.margin) / this.layers;
 			const radius = this.circleStep * i;
 
 			this.svg
 				.append("circle")
-				.attr("stroke", config.color)
-				.attr("fill", "transparent")
+				.attr("class", 'circle-background')
 				.attr("cx", this.origin.x)
 				.attr("cy", this.origin.y)
 				.attr("r", radius - config.margin);
-		}
-	}
-
-	_drawAxes() {
-		for (let i = 0; i <= this.axes.length - 1; i++) {
-			let angle = (360 / this.axes.length) * (i + 1);
-			const axis = this.axes[i];
-			// Manage edge case of two axis
-			if (this.axes.length === 2) {
-				if (angle === 360) angle = -45;
-				if (angle === 180) angle = 45;
-			}
-			this._drawLines(angle);
-			this._drawLabel(angle, axis.name);
-			this._calcPolygon(angle, axis.scope);
-			this._drawItems(angle, axis.items);
 		}
 	}
 
@@ -102,8 +88,7 @@ class RadarChart {
 			.attr("y1", this.origin.y)
 			.attr("x2", this.origin.x)
 			.attr("y2", 0 + this.circleStep / 2)
-			.style("stroke", config.color)
-			.style("stroke-width", "1px")
+			.attr('class', 'axis')
 			.attr(
 				"transform",
 				`rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
@@ -122,11 +107,7 @@ class RadarChart {
 			.append("text")
 			.attr("x", labelX)
 			.attr("y", labelY)
-			.attr("fill", "black")
-			.attr("text-anchor", "middle")
-			.style("font-family", "sans-serif")
-			.style("font-weight", "bold")
-			.style("text-transform", "uppercase")
+			.attr('class', 'label')
 			.text(name)
 			.attr(
 				"transform",
@@ -144,10 +125,7 @@ class RadarChart {
 				.append("text")
 				.attr("x", labelX)
 				.attr("y", labelY)
-				.attr("fill", "black")
-				.attr("text-anchor", "middle")
-				.style("font-family", "sans-serif")
-				.style("font-size", "12px")
+				.attr('class', 'axis-item')
 				.text(item)
 				.attr(
 					"transform",
@@ -161,11 +139,10 @@ class RadarChart {
 		this.polygon.forEach(({ x, y, angle }) => {
 			this.svg
 				.append("circle")
-				.attr("class", "scope")
+				.attr("class", "scope-point")
 				.attr("cx", x)
 				.attr("cy", y)
 				.attr("r", radius)
-				.attr("fill", config.scopeColor)
 				.attr(
 					"transform",
 					`rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
@@ -174,20 +151,18 @@ class RadarChart {
 
 		let polygonPoints = "";
 
-		d3.selectAll(".scope")
-    .each(function(d){
-    var point = document.querySelector('svg').createSVGPoint();//here roor is the svg's id
-    point.x = d3.select(this).attr("cx");//get the circle cx 
-    point.y = d3.select(this).attr("cy");//get the circle cy
-    var newPoint = point.matrixTransform(this.getCTM());//new point after the transform
-		console.log(newPoint);
-		polygonPoints += `${newPoint.x},${newPoint.y} `;
-});
+		d3.selectAll(".scope-point").each(function(d) {
+			var point = document.querySelector("svg").createSVGPoint(); //here roor is the svg's id
+			point.x = d3.select(this).attr("cx"); //get the circle cx
+			point.y = d3.select(this).attr("cy"); //get the circle cy
+			var newPoint = point.matrixTransform(this.getCTM()); //new point after the transform
+			polygonPoints += `${newPoint.x},${newPoint.y} `;
+		});
 
 		this.svg
 			.append("polygon")
 			.attr("points", polygonPoints)
-			.attr("fill", config.scopeColor)
+			.attr('class', 'scope')
 	}
 
 	_calcPolygon(angle, scope) {
@@ -202,9 +177,20 @@ class RadarChart {
 	}
 
 	draw() {
-		this._calcLayers();
 		this._drawCircles();
-		this._drawAxes();
+		for (let i = 0; i <= this.axes.length - 1; i++) {
+			let angle = (360 / this.axes.length) * (i + 1);
+			const axis = this.axes[i];
+			// Manage edge case of two axis
+			if (this.axes.length === 2) {
+				if (angle === 360) angle = -45;
+				if (angle === 180) angle = 45;
+			}
+			this._drawLines(angle);
+			this._drawLabel(angle, axis.name);
+			this._calcPolygon(angle, axis.scope);
+			this._drawItems(angle, axis.items);
+		}
 		this._drawShape();
 	}
 }

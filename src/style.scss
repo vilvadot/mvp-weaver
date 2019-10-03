@@ -1,3 +1,37 @@
+:root {
+  --scale-color: #E6E6E6;
+  --label-color: #000;
+  --scope-color: #54A55F;
+}
+
 svg{
   border: 1px solid red;
+}
+
+.circle-background{
+  stroke: var(--scale-color);
+  fill: transparent;
+}
+
+.axis{
+  stroke: var(--scale-color);
+}
+
+.axis-item{
+  fill: 'black';
+  text-anchor: middle;
+  font-family: Arial;
+  font-size: 12px;
+}
+
+.label{
+  fill: 'black';
+  text-anchor: middle;
+  font-family: Arial;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.scope,.scope-point{
+  fill: var(--scope-color);
 }
