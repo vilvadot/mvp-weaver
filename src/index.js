@@ -28,7 +28,10 @@ const mvpData = {
 	]
 };
 
-const layerWidth = 30;
+const config = {
+	margin: 30,
+	labelOffset: 5,
+}
 
 class RadarChart {
 	constructor(height, width, data) {
@@ -57,49 +60,61 @@ class RadarChart {
 
 	_drawCircles() {
 		for (let i = 0; i <= this.layers; i++) {
+			const radius = (((this.height / this.layers) / 2) * i) - config.margin
 			this.svg
 				.append("circle")
 				.attr("stroke", "black")
 				.attr("fill", "transparent")
 				.attr("cx", this.origin.x)
 				.attr("cy", this.origin.y)
-				.attr("r", (this.height / this.layers / 2) * i);
+				.attr("r", radius);
 		}
 	}
 
 	_drawAxes() {
 		for (let i = 0; i <= this.axes.length - 1; i++) {
-			const degrees = (360 / this.axes.length) * (i+1)
-			this.svg
-				.append("line")
-				.attr("x1", this.origin.x)
-				.attr("y1", this.origin.y)
-				.attr("x2", this.origin.x)
-				.attr("y2", 0)
-				.style("stroke", "grey")
-				.style("stroke-width", "1px")
-				.attr("transform", `rotate(${degrees}, ${this.origin.x}, ${this.origin.y})`)
+			const degrees = (360 / this.axes.length) * (i + 1);
+			this._drawLines(degrees);
+			this._drawLabel(degrees);
 		}
 	}
 
-	_drawBox() {
-		var chairOriginX = this.origin.x + (this.height / 2) * Math.sin(0);
-		var chairOriginY = this.origin.y - (this.height / 2) * Math.cos(0);
+	_drawLines(angle) {
+		this.svg
+			.append("line")
+			.attr("x1", this.origin.x)
+			.attr("y1", this.origin.y)
+			.attr("x2", this.origin.x)
+			.attr("y2", 0 + config.margin)
+			.style("stroke", "grey")
+			.style("stroke-width", "1px")
+			.attr(
+				"transform",
+				`rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
+			);
+	}
+
+	_drawLabel(angle) {
+		var labelX = this.origin.x + (this.height / 2) * Math.sin(0);
+		var labelY = (this.origin.y - (this.height / 2) * Math.cos(0)) + config.margin - config.labelOffset;
+		
 		this.svg
 			.append("rect")
-			.attr("x", chairOriginX - 20 / 2)
-			.attr("y", chairOriginY - 20 / 2)
+			.attr("x", labelX - 20 / 2)
+			.attr("y", (labelY - 20 / 2) - config.labelOffset)
 			.attr("width", 20)
 			.attr("height", 20)
 			.attr("stroke", "blue")
-			.attr("transform", `rotate(45, ${this.origin.x}, ${this.origin.y})`);
+			.attr(
+				"transform",
+				`rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
+			);
 	}
 
 	draw() {
 		this._calcLayers();
 		this._drawCircles();
 		this._drawAxes();
-		this._drawBox();
 	}
 }
 
