@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
 const mvpData = {
-	axis: [
+	axes: [
 		{
 			name: "apis",
 			items: [
@@ -19,6 +19,11 @@ const mvpData = {
 			name: "export",
 			items: ["pdf", "html", "online hosted"],
 			scope: 0
+		},
+		{
+			name: "security",
+			items: ["user", "3rd party", "magic link"],
+			scope: 0
 		}
 	]
 };
@@ -29,7 +34,11 @@ class RadarChart {
 	constructor(height, width, data) {
 		this.height = height;
 		this.width = width;
-		this.data = data;
+		this.origin = {
+			x: this.width / 2,
+			y: this.height / 2
+		};
+		this.axes = data.axes;
 		this.svg = d3
 			.select("body")
 			.append("svg")
@@ -37,30 +46,60 @@ class RadarChart {
 			.attr("height", this.height);
 	}
 
-	_getNumberOfCircles() {
+	_calcLayers() {
 		let layers = 0;
-		for (let i = 0; i < this.data.axis.length; i++) {
-			const currentAxis = this.data.axis[i].items.length;
+		for (let i = 0; i < this.axes.length; i++) {
+			const currentAxis = this.axes[i].items.length;
 			layers = currentAxis > layers ? currentAxis : layers;
 		}
-		return layers;
+		this.layers = layers;
 	}
 
 	_drawCircles() {
-		const layers = this._getNumberOfCircles();
-		for (let i = 0; i <= layers; i++) {
+		for (let i = 0; i <= this.layers; i++) {
 			this.svg
 				.append("circle")
 				.attr("stroke", "black")
 				.attr("fill", "transparent")
-				.attr("cx", this.width / 2)
-				.attr("cy", this.height / 2)
-				.attr("r", (this.height / layers/2) * i);
+				.attr("cx", this.origin.x)
+				.attr("cy", this.origin.y)
+				.attr("r", (this.height / this.layers / 2) * i);
 		}
 	}
 
+	_drawAxes() {
+		for (let i = 0; i <= this.axes.length - 1; i++) {
+			const degrees = (360 / this.axes.length) * (i+1)
+			this.svg
+				.append("line")
+				.attr("x1", this.origin.x)
+				.attr("y1", this.origin.y)
+				.attr("x2", this.origin.x)
+				.attr("y2", 0)
+				.style("stroke", "grey")
+				.style("stroke-width", "1px")
+				.attr("transform", `rotate(${degrees}, ${this.origin.x}, ${this.origin.y})`)
+		}
+	}
+
+	_drawBox() {
+		var chairOriginX = this.origin.x + (this.height / 2) * Math.sin(0);
+		var chairOriginY = this.origin.y - (this.height / 2) * Math.cos(0);
+		this.svg
+			.append("rect")
+			.attr("x", chairOriginX - 20 / 2)
+			.attr("y", chairOriginY - 20 / 2)
+			.attr("width", 20)
+			.attr("height", 20)
+			.attr("stroke", "blue")
+			.attr("transform", `rotate(45, ${this.origin.x}, ${this.origin.y})`);
+	}
+
 	draw() {
+		this._calcLayers();
 		this._drawCircles();
+		this._drawAxes();
+		this._drawBox();
 	}
 }
 
