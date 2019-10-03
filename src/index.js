@@ -29,6 +29,8 @@ const mvpData = {
 };
 
 const config = {
+	height: 500,
+	width: 500,
 	margin: 30,
 	labelOffset: 5,
 }
@@ -73,10 +75,34 @@ class RadarChart {
 
 	_drawAxes() {
 		for (let i = 0; i <= this.axes.length - 1; i++) {
-			const degrees = (360 / this.axes.length) * (i + 1);
-			this._drawLines(degrees);
-			this._drawLabel(degrees);
+			const angle = (360 / this.axes.length) * (i + 1);
+			const axis = this.axes[i]
+			this._drawLines(angle);
+			this._drawLabel(angle, axis.name);
+			this._drawItems(angle, axis.items);
 		}
+	}
+
+	_drawItems(angle, items){
+		// this.svg
+		// 	.
+		var labelX = this.origin.x + (this.height / 2) * Math.sin(0);
+		var labelY = (this.origin.y - (this.height / 2) * Math.cos(0)) + config.margin - config.labelOffset;
+		
+		this.svg
+			.data(items)
+			.enter()
+			.append("text")
+			.attr("x", labelX)
+			.attr("y", labelY )
+			.attr('fill', 'red')
+			.attr('text-anchor', 'middle')
+			.style("font-family", "sans-serif")
+			.text('Labeled')
+			.attr(
+				"transform",
+				`rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
+			);
 	}
 
 	_drawLines(angle) {
@@ -94,17 +120,19 @@ class RadarChart {
 			);
 	}
 
-	_drawLabel(angle) {
+	_drawLabel(angle, name) {
 		var labelX = this.origin.x + (this.height / 2) * Math.sin(0);
 		var labelY = (this.origin.y - (this.height / 2) * Math.cos(0)) + config.margin - config.labelOffset;
 		
 		this.svg
-			.append("rect")
-			.attr("x", labelX - 20 / 2)
-			.attr("y", (labelY - 20 / 2) - config.labelOffset)
-			.attr("width", 20)
-			.attr("height", 20)
-			.attr("stroke", "blue")
+			.append("text")
+			.attr("x", labelX)
+			.attr("y", labelY )
+			.attr('fill', 'black')
+			.attr('text-anchor', 'middle')
+			.style("font-family", "sans-serif")
+			.style("text-transform", "capitalize")
+			.text(name)
 			.attr(
 				"transform",
 				`rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
@@ -118,5 +146,5 @@ class RadarChart {
 	}
 }
 
-const mvpGraph = new RadarChart(500, 500, mvpData);
+const mvpGraph = new RadarChart(config.height, config.width, mvpData);
 mvpGraph.draw();
