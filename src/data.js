@@ -1,5 +1,3 @@
-import RadarChart from './RadarChart'
-
 const mvpData = {
 	axes: [
 		{
@@ -27,7 +25,3 @@ const mvpData = {
 		}
 	]
 };
-
-
-const mvpGraph = new RadarChart(600, 600, mvpData);
-mvpGraph.draw();

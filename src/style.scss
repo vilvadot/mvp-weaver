@@ -4,10 +4,6 @@
   --scope-color: #54A55F;
 }
 
-svg{
-  border: 1px solid red;
-}
-
 .circle-background{
   stroke: var(--scale-color);
   fill: transparent;
@@ -24,6 +20,10 @@ svg{
   font-size: 12px;
 }
 
+.axis-item--complete{
+  fill: var(--scope-color);
+}
+
 .label{
   fill: 'black';
   text-anchor: middle;
@@ -34,4 +34,5 @@ svg{
 
 .scope,.scope-point{
   fill: var(--scope-color);
+  opacity: .4;
 }
