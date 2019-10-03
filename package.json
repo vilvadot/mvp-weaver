@@ -1,0 +1,20 @@
+{
+  "name": "mvp-weaver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "parcel build src/index.html --no-source-maps --no-content-hash",
+    "dev": "parcel src/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "d3": "^5.12.0",
+    "parcel": "^1.12.3"
+  },
+  "devDependencies": {
+    "sass": "^1.23.0"
+  }
+}
