@@ -67,14 +67,34 @@ function App() {
           ...axes[axisIndex].items.slice(0, itemIndex),
           value,
           ...axes[axisIndex].items.slice(itemIndex + 1)
-        ]
+        ],
+      },
+      ...axes.slice(axisIndex + 1)
+    ]);
+  };
+
+  const deleteAxis = index => {
+    setAxes([...axes.slice(0, index), ...axes.slice(index + 1)]);
+  };
+
+  const deleteAxisItem = (axisIndex, itemIndex, value) => {
+    setAxes([
+      ...axes.slice(0, axisIndex),
+      {
+        ...axes[axisIndex],
+        items: [
+          ...axes[axisIndex].items.slice(0, itemIndex),
+          ...axes[axisIndex].items.slice(itemIndex + 1)
+        ],
       },
       ...axes.slice(axisIndex + 1)
     ]);
   };
 
   return (
-    <GraphContext.Provider value={{ axes, updateAxisName, updateAxisItem }}>
+    <GraphContext.Provider
+      value={{ axes, updateAxisName, updateAxisItem, deleteAxis, deleteAxisItem }}
+    >
       <RadarChart />
       <GraphEdit />
     </GraphContext.Provider>

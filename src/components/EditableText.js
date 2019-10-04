@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 
-const EditableText = ({ name, children, onChange }) => {
+const EditableText = ({ name, children, onChange, onDelete }) => {
   const [isEditMode, setEditMode] = useState(false);
   const toggleEdit = () => {
     setEditMode(!isEditMode);
   };
+
+  const handleBlur = e => {
+    toggleEdit();
+    if (!e.target.value) onDelete();
+  };
+
   const handleKeyPress = e => {
-    if (e.key === "Enter") toggleEdit();
+    if (e.key === "Enter") {
+      toggleEdit();
+      if (!e.target.value) onDelete();
+    }
   };
 
   const node = isEditMode ? (
@@ -15,7 +24,7 @@ const EditableText = ({ name, children, onChange }) => {
       value={children}
       name={name}
       onChange={onChange}
-      onBlur={() => toggleEdit()}
+      onBlur={handleBlur}
       onKeyDownCapture={handleKeyPress}
     />
   ) : (
