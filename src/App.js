@@ -22,6 +22,16 @@ const initialData = [
     scope: 1
   },
   {
+    name: "hey",
+    items: ["pdf", "html", "online hosted"],
+    scope: 1
+  },
+  {
+    name: "hello",
+    items: ["pdf", "html", "online hosted"],
+    scope: 1
+  },
+  {
     name: "export",
     items: ["pdf", "html", "online hosted"],
     scope: 1
@@ -48,12 +58,24 @@ function App() {
     ]);
   };
 
-  console.log(axes)
+  const updateAxisItem = (axisIndex, itemIndex, value) => {
+    setAxes([
+      ...axes.slice(0, axisIndex),
+      {
+        ...axes[axisIndex],
+        items: [
+          ...axes[axisIndex].items.slice(0, itemIndex),
+          value,
+          ...axes[axisIndex].items.slice(itemIndex + 1)
+        ]
+      },
+      ...axes.slice(axisIndex + 1)
+    ]);
+  };
+
   return (
-    <GraphContext.Provider value={{ axes, updateAxisName }}>
-      <div className="graph-preview">
-        <RadarChart />
-      </div>
+    <GraphContext.Provider value={{ axes, updateAxisName, updateAxisItem }}>
+      <RadarChart />
       <GraphEdit />
     </GraphContext.Provider>
   );

@@ -14,7 +14,7 @@ const RadarChart = () => {
 	}
 
 	draw(context.axes)
-	return <div id="graph"></div>
+	return null
 }	
 
 export default RadarChart

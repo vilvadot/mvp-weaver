@@ -1,6 +1,15 @@
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 #root{
   width: 100%;
   height: 100%;
+}
+
+.navbar{
+  font-size: 14px;
+  margin-bottom: 50px;
 }
 
 .container{
@@ -12,12 +21,73 @@
   width: 100%;
 }
 
-.navbar{
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 .graph-edit{
+  padding-left: 20px;
+  display:flex;
   width: 100%;
   height: 600px;
-  border: 1px solid red;
+  flex-direction: column;
+}
+
+.axis-container{
+  display:flex;
+  flex-direction: column;
+  min-width: 150px;
+  border-radius: 4px;
+  margin: 10px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+}
+
+.axis-items{
+  display:flex;
+  height: 25px
+}
+
+.axis-items .editable-item>span{
+  padding-right: 10px;
+}
+
+.axis-items .editable-item:not(:first-of-type)>span{
+  padding-left: 10px;
+}
+
+.axis-items .editable-item:not(:last-of-type)>span{
+  border-right: 1px solid black;
+}
+
+.axis-title{
+  margin: 0;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.axis-title input{
+  max-width: 100px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.editable-item{
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.editable-item input{
+  border: 1px solid #e2e2e2;
+  border-radius: 2px;
+  padding: 5px;
+  margin-right: 5px;
+  width: 100%;
+}
+
+.editable-item input:active, .editable-item input:focus{
+  border-color: #54A55F;
+}
+
+.editable-item:hover{
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 }
