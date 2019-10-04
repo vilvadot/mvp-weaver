@@ -7,7 +7,7 @@ const config = {
 };
 
 class RadarChart {
-  constructor(height, width, data) {
+  constructor(height, width, axes) {
     this.height = height;
     this.width = width;
     this.polygon = [];
@@ -15,9 +15,9 @@ class RadarChart {
       x: this.width / 2,
       y: this.height / 2
     };
-    this.axes = data.axes;
+    this.axes = axes;
     this.svg = d3
-      .select("body")
+      .select("#graph")
       .append("svg")
       .attr("width", this.width)
       .attr("height", this.height);
