@@ -16,7 +16,7 @@ const Axis = ({ name, items, scope, onNameEdit, index }) => {
       <div className="axis-items">
         {items.map((item, itemIndex) => (
           <EditableText
-            key={item}
+            key={itemIndex}
             onChange={e =>
               context.updateAxisItem(index, itemIndex, e.target.value)
             }

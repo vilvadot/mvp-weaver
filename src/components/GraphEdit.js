@@ -7,7 +7,7 @@ const GraphEdit = () => {
   return (
     <div className="graph-edit">
       {context.axes.map(({ name, items, scope }, index) => {
-        return <Axis key={name} name={name} items={items} scope={scope} index={index} />;
+        return <Axis key={index} name={name} items={items} scope={scope} index={index} />;
       })}
     </div>
   );
