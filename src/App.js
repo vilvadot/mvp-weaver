@@ -43,6 +43,12 @@ const initialData = [
   }
 ];
 
+const emptyAxis = {
+  name: 'New axis',
+  items: ['first-item'],
+  scope: 0,
+}
+
 export const GraphContext = React.createContext();
 
 function App() {
@@ -91,9 +97,16 @@ function App() {
     ]);
   };
 
+  const addAxis = () => {
+    setAxes([
+      ...axes,
+      emptyAxis
+    ])
+  }
+
   return (
     <GraphContext.Provider
-      value={{ axes, updateAxisName, updateAxisItem, deleteAxis, deleteAxisItem }}
+      value={{ axes, updateAxisName, updateAxisItem, deleteAxis, deleteAxisItem, addAxis }}
     >
       <RadarChart />
       <GraphEdit />

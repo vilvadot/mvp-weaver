@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const EditableText = ({ name, children, onChange, onDelete }) => {
   const [isEditMode, setEditMode] = useState(false);
+
+  const inputRef = React.createRef();
+
   const toggleEdit = () => {
     setEditMode(!isEditMode);
   };
@@ -18,8 +21,16 @@ const EditableText = ({ name, children, onChange, onDelete }) => {
     }
   };
 
+  useEffect(() => {
+    console.log("focus");
+    if (isEditMode) {
+      inputRef.current.focus();
+    }
+  });
+
   const node = isEditMode ? (
     <input
+      ref={inputRef}
       type="text"
       value={children}
       name={name}
@@ -28,7 +39,9 @@ const EditableText = ({ name, children, onChange, onDelete }) => {
       onKeyDownCapture={handleKeyPress}
     />
   ) : (
-    <span onClick={toggleEdit}>{children}</span>
+    <span ref={inputRef} onClick={toggleEdit}>
+      {children}
+    </span>
   );
 
   return <div className="editable-item">{node}</div>;
