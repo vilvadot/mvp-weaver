@@ -114,6 +114,13 @@ class RadarChart {
   _drawPolygon() {
     let polygonPoints = "";
 
+    const numberOfPoints = d3.selectAll(".scope-point")._groups[0].length
+
+    // Edge case to draw triangle in case of two axis
+    if(numberOfPoints === 2) {
+      polygonPoints += ` ${this.origin.x},${this.origin.y} `
+    }
+
     d3.selectAll(".scope-point").each(function(d) {
       var point = document.querySelector("svg").createSVGPoint(); //here roor is the svg's id
       point.x = d3.select(this).attr("cx"); //get the circle cx
@@ -121,6 +128,7 @@ class RadarChart {
       var newPoint = point.matrixTransform(this.getCTM()); //new point after the transform
       polygonPoints += `${newPoint.x},${newPoint.y} `;
     });
+
 
     this.svg
       .append("polygon")

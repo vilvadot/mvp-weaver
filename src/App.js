@@ -21,38 +21,38 @@ const initialData = [
     items: ["pdf", "html", "online hosted"],
     scope: 1
   },
-  {
-    name: "hey",
-    items: ["pdf", "html", "online hosted"],
-    scope: 1
-  },
-  {
-    name: "hello",
-    items: ["pdf", "html", "online hosted"],
-    scope: 1
-  },
-  {
-    name: "export",
-    items: ["pdf", "html", "online hosted"],
-    scope: 1
-  },
-  {
-    name: "security",
-    items: ["user", "3rd party", "magic link"],
-    scope: 2
-  }
+  // {
+  //   name: "hey",
+  //   items: ["pdf", "html", "online hosted"],
+  //   scope: 1
+  // },
+  // {
+  //   name: "hello",
+  //   items: ["pdf", "html", "online hosted"],
+  //   scope: 1
+  // },
+  // {
+  //   name: "export",
+  //   items: ["pdf", "html", "online hosted"],
+  //   scope: 1
+  // },
+  // {
+  //   name: "security",
+  //   items: ["user", "3rd party", "magic link"],
+  //   scope: 2
+  // }
 ];
 
 const emptyAxis = {
   name: "NEW AXIS",
   items: ["first-item"],
-  scope: 1,
+  scope: 0,
 };
 
 export const GraphContext = React.createContext();
 
 function App() {
-  const [axes, setAxes] = useState([]);
+  const [axes, setAxes] = useState(initialData);
   const updateAxisName = (index, value) => {
     setAxes([
       ...axes.slice(0, index),
