@@ -6,7 +6,9 @@ Proof of concept tool to accompany this article: https://vilva.io/blog/how-to-de
 
 # TODO
 
-- [ ] Download SVG to JPG
+- [X] Download SVG to JPG
+- [ ] Fix graphical bugs when changing sizes/layers
+- [ ] Make SVG 2x resolution and render 1x in canvas (for retina)
 - [ ] Add Typescript
 - [ ] Drag and drop Axes
 - [ ] Drag and drop items

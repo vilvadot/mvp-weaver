@@ -6,6 +6,9 @@ const ChartControls = () => {
   const context = useContext(GraphContext);
   return (
     <div className="chart-controls">
+      <button className="axis-add" onClick={context.addAxis}>
+        🕷 Add axis
+      </button>
       {context.axes.map(({ name, items, scope }, index) => {
         return (
           <AxisCard
@@ -17,9 +20,6 @@ const ChartControls = () => {
           />
         );
       })}
-      <button className="axis-add" onClick={context.addAxis}>
-        🕷 Add axis
-      </button>
     </div>
   );
 };

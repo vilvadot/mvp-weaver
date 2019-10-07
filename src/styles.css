@@ -1,11 +1,10 @@
-:root{
+:root {
   --scope-color: #54a55f;
-  --interaction-color: #4E9ABC;
-  --interaction-color: #4E9ABC;
+  --interaction-color: #4e9abc;
   --danger-color: red;
 }
 
-html *{
+html * {
   font-family: Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
@@ -15,12 +14,17 @@ html *{
   height: 100%;
 }
 
+#output-image {
+  height: 600px !important;
+  height: 600px !important;
+}
+
 .navbar {
   margin-bottom: 50px;
   padding: 25px;
 }
 
-.navbar h1{
+.navbar h1 {
   font-size: 24px;
   font-weight: bold;
 }
@@ -59,7 +63,7 @@ html *{
   cursor: pointer;
   color: black;
   background: var(--interaction-color);
-  color:white;
+  color: white;
 }
 
 .editable-item {
@@ -125,12 +129,12 @@ html *{
 .axis-card--items {
   display: flex;
   height: 25px;
-  align-items:center;
-  text-align:center;
+  align-items: center;
+  text-align: center;
 }
 
-.axis-card--items .active{
-  color: var(--scope-color)
+.axis-card--items .active {
+  color: var(--scope-color);
 }
 
 .axis-card--items .editable-item > span {

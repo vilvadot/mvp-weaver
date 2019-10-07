@@ -1,11 +1,12 @@
 import * as d3 from "d3";
+import canvg from "canvg";
 
 const config = {
   initialLayers: 7,
   margin: 30,
   labelOffset: 15,
   minRadius: 50,
-  font: 'Arial',
+  font: "Arial",
   colors: {
     scope: "#54A55F",
     label: "#000",
@@ -14,7 +15,7 @@ const config = {
 };
 
 class RadarChart {
-  constructor(height, width, axes) {
+  constructor(height, width, axes, id = "radar-chart") {
     this.height = height;
     this.width = width;
     this.polygon = [];
@@ -22,9 +23,10 @@ class RadarChart {
       x: this.width / 2,
       y: this.height / 2
     };
+    this.id = `#${id}`;
     this.axes = axes;
     this.svg = d3
-      .select("#graph")
+      .select(this.id)
       .append("svg")
       .attr("width", this.width)
       .attr("height", this.height);
@@ -68,14 +70,11 @@ class RadarChart {
       .attr("y1", this.origin.y)
       .attr("x2", this.origin.x)
       .attr("y2", 0 + this.circleStep / 2)
-      .attr(
-        "transform",
-        `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
-      )
-      .style('stroke', config.colors.scale)
+      .attr("transform", `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`)
+      .style("stroke", config.colors.scale);
   }
 
-  _drawLabel(angle, name) {
+  _drawLabels(angle, name) {
     var labelX = this.origin.x + (this.height / 2) * Math.sin(0);
     var labelY =
       this.origin.y -
@@ -87,16 +86,13 @@ class RadarChart {
       .append("text")
       .attr("x", labelX)
       .attr("y", labelY)
-      .text(name)
-      .attr(
-        "transform",
-        `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
-      )
-      .style('fill', 'black')
-      .style('text-anchor', 'middle')
-      .style('font-family', config.font)
-      .style('font-weight', 'bold')
-      .style('text-transform', 'uppercase')
+      .text(name.toUpperCase())
+      .attr("transform", `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`)
+      .style("fill", "black")
+      .style("text-anchor", "middle")
+      .style("font-size", "16px")
+      .style("font-family", config.font)
+      .style("font-weight", "bold");
   }
 
   _drawItems(angle, items, scope) {
@@ -114,14 +110,14 @@ class RadarChart {
           "transform",
           `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
         )
-        .style('fill', config.colors.label)
-        .style('text-anchor', 'middle')
-        .style('font-family', config.font)
-        .style('font-size', '12px')
-        .style('fill', () => {
-          const isInScope = index <= scope
-          return isInScope ? config.colors.scope : ''
-        })
+        .style("fill", config.colors.label)
+        .style("text-anchor", "middle")
+        .style("font-family", config.font)
+        .style("font-size", "12px")
+        .style("fill", () => {
+          const isInScope = index <= scope;
+          return isInScope ? config.colors.scope : "";
+        });
     });
   }
 
@@ -146,8 +142,8 @@ class RadarChart {
     this.svg
       .append("polygon")
       .attr("points", polygonPoints)
-      .style('fill', config.colors.scope)
-      .style('opacity', .4)
+      .style("fill", config.colors.scope)
+      .style("opacity", 0.4);
   }
 
   _drawPoints(angle, scope) {
@@ -161,12 +157,23 @@ class RadarChart {
       .attr("cx", dotX)
       .attr("cy", dotY)
       .attr("r", radius)
-      .attr(
-        "transform",
-        `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
-      )
-      .style('fill', config.colors.scope)
-      .style('opacity', .4)
+      .attr("transform", `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`)
+      .style("fill", config.colors.scope)
+      .style("opacity", 0.4);
+  }
+
+  drawCanvas() {
+    this.draw();
+    const svgContainer = document.querySelector(this.id);
+    var canvas = document.createElement("canvas");
+    canvas.id = "#output-image";
+    svgContainer.parentNode.prepend(canvas);
+
+    svgContainer.style = "visibility: hidden; width: 0; overflow; hidden"; // hide real SVG
+
+    const svg = svgContainer.innerHTML;
+
+    canvg(canvas, svg);
   }
 
   draw() {
@@ -183,7 +190,7 @@ class RadarChart {
       }
 
       this._drawLines(angle);
-      this._drawLabel(angle, axis.name);
+      this._drawLabels(angle, axis.name);
       this._drawPoints(angle, axis.scope);
       this._drawItems(angle, axis.items, axis.scope);
     }
