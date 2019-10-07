@@ -7,6 +7,8 @@ Proof of concept tool to accompany this article: https://vilva.io/blog/how-to-de
 # TODO
 
 - [X] Download SVG to JPG
+- [ ] Export to JSON
+- [ ] Import JSON
 - [ ] Fix graphical bugs when changing sizes/layers
 - [ ] Make SVG 2x resolution and render 1x in canvas (for retina)
 - [ ] Add Typescript

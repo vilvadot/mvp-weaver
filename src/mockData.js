@@ -1,7 +1,7 @@
 const mockData = [
   {
     name: "apis",
-    items: ["gihtub", "linkedin", "gitlab", "slidesahre", "xing", "import"],
+    items: ["gihtub", "linkedin", "gitlab", "slideshare", "xing", "import"],
     scope: 1
   },
   {
