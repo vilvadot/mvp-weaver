@@ -44,15 +44,15 @@ const initialData = [
 ];
 
 const emptyAxis = {
-  name: "",
-  items: [""],
-  scope: 0
+  name: "NEW AXIS",
+  items: ["first-item"],
+  scope: 1,
 };
 
 export const GraphContext = React.createContext();
 
 function App() {
-  const [axes, setAxes] = useState(initialData);
+  const [axes, setAxes] = useState([]);
   const updateAxisName = (index, value) => {
     setAxes([
       ...axes.slice(0, index),

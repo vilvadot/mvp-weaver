@@ -24,7 +24,7 @@ class RadarChart {
   }
 
   _calcLayers() {
-    let layers = 0;
+    let layers = 6;
     for (let i = 0; i < this.axes.length; i++) {
       const currentAxis = this.axes[i].items.length;
       const isCurrentAxisBigger = currentAxis > layers;
@@ -33,19 +33,22 @@ class RadarChart {
     this.layers = layers;
   }
 
+  _svgCircle(x, y, radius) {
+    this.svg
+      .append("circle")
+      .attr("class", "circle-background")
+      .attr("cx", x)
+      .attr("cy", y)
+      .attr("r", radius);
+  }
+
   _drawCircles() {
     this._calcLayers();
 
     for (let i = 0; i <= this.layers + 1; i++) {
       this.circleStep = (this.height / 2 - config.margin) / this.layers;
       const radius = this.circleStep * i;
-
-      this.svg
-        .append("circle")
-        .attr("class", "circle-background")
-        .attr("cx", this.origin.x)
-        .attr("cy", this.origin.y)
-        .attr("r", radius - config.margin);
+      this._svgCircle(this.origin.x, this.origin.y, radius - config.margin);
     }
   }
 
