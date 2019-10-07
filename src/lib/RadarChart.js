@@ -4,7 +4,13 @@ const config = {
   initialLayers: 7,
   margin: 30,
   labelOffset: 15,
-  minRadius: 50
+  minRadius: 50,
+  font: 'Arial',
+  colors: {
+    scope: "#54A55F",
+    label: "#000",
+    scale: "#E6E6E6"
+  }
 };
 
 class RadarChart {
@@ -40,7 +46,9 @@ class RadarChart {
       .attr("class", "circle-background")
       .attr("cx", x)
       .attr("cy", y)
-      .attr("r", radius);
+      .attr("r", radius)
+      .style("stroke", config.colors.scale)
+      .style("fill", "transparent");
   }
 
   _drawCircles() {
@@ -60,11 +68,11 @@ class RadarChart {
       .attr("y1", this.origin.y)
       .attr("x2", this.origin.x)
       .attr("y2", 0 + this.circleStep / 2)
-      .attr("class", "axis")
       .attr(
         "transform",
         `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
-      );
+      )
+      .style('stroke', config.colors.scale)
   }
 
   _drawLabel(angle, name) {
@@ -79,12 +87,16 @@ class RadarChart {
       .append("text")
       .attr("x", labelX)
       .attr("y", labelY)
-      .attr("class", "label")
       .text(name)
       .attr(
         "transform",
         `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
-      );
+      )
+      .style('fill', 'black')
+      .style('text-anchor', 'middle')
+      .style('font-family', config.font)
+      .style('font-weight', 'bold')
+      .style('text-transform', 'uppercase')
   }
 
   _drawItems(angle, items, scope) {
@@ -97,29 +109,30 @@ class RadarChart {
         .append("text")
         .attr("x", labelX)
         .attr("y", labelY)
-        .attr("class", () => {
-          let className = "axis-item";
-          if (index <= scope) {
-            className += " axis-item--complete";
-          }
-          return className;
-        })
         .text(item)
         .attr(
           "transform",
           `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
-        );
+        )
+        .style('fill', config.colors.label)
+        .style('text-anchor', 'middle')
+        .style('font-family', config.font)
+        .style('font-size', '12px')
+        .style('fill', () => {
+          const isInScope = index <= scope
+          return isInScope ? config.colors.scope : ''
+        })
     });
   }
 
   _drawPolygon() {
     let polygonPoints = "";
 
-    const numberOfPoints = d3.selectAll(".scope-point")._groups[0].length
+    const numberOfPoints = d3.selectAll(".scope-point")._groups[0].length;
 
     // Edge case to draw triangle in case of two axis
-    if(numberOfPoints === 2) {
-      polygonPoints += ` ${this.origin.x},${this.origin.y} `
+    if (numberOfPoints === 2) {
+      polygonPoints += ` ${this.origin.x},${this.origin.y} `;
     }
 
     d3.selectAll(".scope-point").each(function(d) {
@@ -130,11 +143,11 @@ class RadarChart {
       polygonPoints += `${newPoint.x},${newPoint.y} `;
     });
 
-
     this.svg
       .append("polygon")
       .attr("points", polygonPoints)
-      .attr("class", "scope");
+      .style('fill', config.colors.scope)
+      .style('opacity', .4)
   }
 
   _drawPoints(angle, scope) {
@@ -151,7 +164,9 @@ class RadarChart {
       .attr(
         "transform",
         `rotate(${angle}, ${this.origin.x}, ${this.origin.y})`
-      );
+      )
+      .style('fill', config.colors.scope)
+      .style('opacity', .4)
   }
 
   draw() {

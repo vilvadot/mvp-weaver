@@ -1,58 +1,18 @@
 import React, { useState } from "react";
-import RadarChart from "./components/RadarChart";
+import MVPChart from "./components/MVPChart";
 import ChartControls from "./components/ChartControls";
-
-const initialData = [
-  {
-    name: "apis",
-    items: [
-      "manual",
-      "github",
-      "linkedin",
-      "gitlab",
-      "slideshare",
-      "xing",
-      "import"
-    ],
-    scope: 3
-  },
-  {
-    name: "test",
-    items: ["pdf", "html", "online hosted"],
-    scope: 1
-  },
-  {
-    name: "hey",
-    items: ["pdf", "html", "online hosted"],
-    scope: 1
-  },
-  // {
-  //   name: "hello",
-  //   items: ["pdf", "html", "online hosted"],
-  //   scope: 1
-  // },
-  // {
-  //   name: "export",
-  //   items: ["pdf", "html", "online hosted"],
-  //   scope: 1
-  // },
-  // {
-  //   name: "security",
-  //   items: ["user", "3rd party", "magic link"],
-  //   scope: 2
-  // }
-];
+import mockData from './mockData'
 
 const emptyAxis = {
   name: "NEW AXIS",
   items: ["first-item"],
-  scope: 0,
+  scope: 0
 };
 
 export const GraphContext = React.createContext();
 
 function App() {
-  const [axes, setAxes] = useState(initialData);
+  const [axes, setAxes] = useState(mockData);
   const updateAxisName = (index, value) => {
     setAxes([
       ...axes.slice(0, index),
@@ -136,7 +96,7 @@ function App() {
         deleteAxisItem
       }}
     >
-      <RadarChart />
+      <MVPChart axes={axes} />
       <ChartControls />
     </GraphContext.Provider>
   );
