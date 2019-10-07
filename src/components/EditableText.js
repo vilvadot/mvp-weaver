@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const EditableText = ({ name, children, onChange, onDelete }) => {
+const EditableText = ({ name, children, onChange, onDelete, isDeletable }) => {
   const [isEditMode, setEditMode] = useState(false);
 
   const inputRef = React.createRef();
@@ -10,19 +10,18 @@ const EditableText = ({ name, children, onChange, onDelete }) => {
   };
 
   const handleBlur = e => {
-    toggleEdit();
-    if (!e.target.value) onDelete();
+    if(isDeletable) toggleEdit();
+    if (!e.target.value && isDeletable) onDelete();
   };
 
   const handleKeyPress = e => {
     if (e.key === "Enter") {
       toggleEdit();
-      if (!e.target.value) onDelete();
+      if (!e.target.value && isDeletable) onDelete();
     }
   };
 
   useEffect(() => {
-    console.log("focus");
     if (isEditMode) {
       inputRef.current.focus();
     }

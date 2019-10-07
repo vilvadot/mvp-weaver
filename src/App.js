@@ -44,7 +44,7 @@ const initialData = [
 ];
 
 const emptyAxis = {
-  name: 'New axis',
+  name: 'NEW AXIS',
   items: ['first-item'],
   scope: 0,
 }

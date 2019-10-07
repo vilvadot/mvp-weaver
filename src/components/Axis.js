@@ -19,6 +19,7 @@ const Axis = ({ name, items, scope, onNameEdit, index }) => {
       <div className="axis-items">
         {items.map((item, itemIndex) => (
           <EditableText
+            isDeletable
             key={itemIndex}
             onDelete={e => context.deleteAxisItem(index, itemIndex)}
             onChange={e =>
