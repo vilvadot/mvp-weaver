@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import EditableText from "./EditableText";
 import { GraphContext } from "../App";
+import ScopeSlider from "./ScopeSlider";
 
-const Axis = ({ name, items, scope, onNameEdit, index }) => {
+const Axis = ({ name, items, scope, index }) => {
   const context = useContext(GraphContext);
   return (
     <div className="axis-container">
@@ -17,20 +18,43 @@ const Axis = ({ name, items, scope, onNameEdit, index }) => {
           {name}
         </EditableText>
       </h3>
-      <div className="axis-items">
-        {items.map((item, itemIndex) => (
-          <EditableText
-            placeholder="item"
-            isDeletable
-            key={itemIndex}
-            onDelete={e => context.deleteAxisItem(index, itemIndex)}
-            onChange={e =>
-              context.updateAxisItem(index, itemIndex, e.target.value)
-            }
+      <div className="axis-edit">
+        <div className="axis-items">
+          {items.map((item, itemIndex) => {
+            const isLastItem = itemIndex === items.length - 1;
+            let onEnter = null;
+            if (isLastItem) onEnter = () => context.addAxisItem(index);
+
+            return (
+              <EditableText
+                key={itemIndex}
+                placeholder="item"
+                isDeletable
+                onEnter={onEnter}
+                onDelete={e => context.deleteAxisItem(index, itemIndex)}
+                onChange={e =>
+                  context.updateAxisItem(index, itemIndex, e.target.value)
+                }
+              >
+                {item}
+              </EditableText>
+            );
+          })}
+          <button
+            className="item-add"
+            onClick={() => context.addAxisItem(index)}
           >
-            {item}
-          </EditableText>
-        ))}
+            Add
+          </button>
+        </div>
+          <ScopeSlider
+            min={0}
+            max={items.length - 1}
+            value={scope}
+            onChange={e =>
+              context.updateAxisScope(index, Number(e.target.value))
+            }
+          />
       </div>
     </div>
   );

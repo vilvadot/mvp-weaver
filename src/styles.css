@@ -7,9 +7,6 @@
   height: 100%;
 }
 
-.hidden{
-}
-
 .navbar{
   font-size: 14px;
   margin-bottom: 50px;
@@ -110,6 +107,11 @@
   border-color: black;
 }
 
+.axis-edit{
+  display: flex;
+  flex-direction: column;
+}
+
 .editable-item{
   padding: 0;
   margin: 0;
@@ -136,4 +138,21 @@
 
 .editable-item span:hover{
   color: red;
+}
+
+.item-add{
+  background:black;
+  color:white;
+  border:none;
+  outline: none;
+  border-radius: 4px;
+  font-size: 12px;
+  border: 1px solid transparent;
+}
+
+.item-add:hover{
+  cursor:pointer;
+  background:white;
+  color:black;
+  border-color: black;
 }

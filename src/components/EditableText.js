@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-const EditableText = ({ name, children, onChange, onDelete, isDeletable, placeholder }) => {
+const EditableText = ({
+  name,
+  children,
+  onChange,
+  onDelete,
+  isDeletable,
+  placeholder,
+  onEnter
+}) => {
   const [isEditMode, setEditMode] = useState(!children);
 
   const inputRef = React.createRef();
@@ -10,12 +18,14 @@ const EditableText = ({ name, children, onChange, onDelete, isDeletable, placeho
   };
 
   const handleBlur = e => {
-    if(isDeletable) toggleEdit();
+    if (isDeletable) toggleEdit();
     if (!e.target.value && isDeletable) onDelete();
   };
 
   const handleKeyPress = e => {
-    if (e.key === "Enter") {
+    const pressedEnter = e.key === "Enter";
+    if (pressedEnter) {
+      if (onEnter) return onEnter();
       toggleEdit();
       if (!e.target.value && isDeletable) onDelete();
     }
@@ -25,11 +35,11 @@ const EditableText = ({ name, children, onChange, onDelete, isDeletable, placeho
     if (isEditMode) {
       inputRef.current.focus();
     }
-  });
+  }, [children, inputRef, isEditMode]);
 
   const node = isEditMode ? (
     <input
-     placeholder={placeholder}
+      placeholder={placeholder}
       ref={inputRef}
       type="text"
       value={children}

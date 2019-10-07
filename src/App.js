@@ -44,10 +44,10 @@ const initialData = [
 ];
 
 const emptyAxis = {
-  name: '',
-  items: [],
-  scope: 0,
-}
+  name: "",
+  items: [""],
+  scope: 0
+};
 
 export const GraphContext = React.createContext();
 
@@ -73,7 +73,7 @@ function App() {
           ...axes[axisIndex].items.slice(0, itemIndex),
           value,
           ...axes[axisIndex].items.slice(itemIndex + 1)
-        ],
+        ]
       },
       ...axes.slice(axisIndex + 1)
     ]);
@@ -91,22 +91,50 @@ function App() {
         items: [
           ...axes[axisIndex].items.slice(0, itemIndex),
           ...axes[axisIndex].items.slice(itemIndex + 1)
-        ],
+        ]
       },
       ...axes.slice(axisIndex + 1)
     ]);
   };
 
   const addAxis = () => {
+    setAxes([...axes, emptyAxis]);
+  };
+
+  const addAxisItem = axisIndex => {
     setAxes([
-      ...axes,
-      emptyAxis
-    ])
-  }
+      ...axes.slice(0, axisIndex),
+      {
+        ...axes[axisIndex],
+        items: [...axes[axisIndex].items, ""]
+      },
+      ...axes.slice(axisIndex + 1)
+    ]);
+  };
+
+  const updateAxisScope = (axisIndex, scope) => {
+    setAxes([
+      ...axes.slice(0, axisIndex),
+      {
+        ...axes[axisIndex],
+        scope
+      },
+      ...axes.slice(axisIndex + 1)
+    ]);
+  };
 
   return (
     <GraphContext.Provider
-      value={{ axes, updateAxisName, updateAxisItem, deleteAxis, deleteAxisItem, addAxis }}
+      value={{
+        axes,
+        addAxis,
+        updateAxisScope,
+        updateAxisName,
+        deleteAxis,
+        addAxisItem,
+        updateAxisItem,
+        deleteAxisItem
+      }}
     >
       <RadarChart />
       <GraphEdit />
