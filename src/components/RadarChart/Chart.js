@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 
 const config = {
+  initialLayers: 7,
   margin: 30,
   labelOffset: 15,
   minRadius: 50
@@ -24,7 +25,7 @@ class RadarChart {
   }
 
   _calcLayers() {
-    let layers = 6;
+    let layers = config.initialLayers;
     for (let i = 0; i < this.axes.length; i++) {
       const currentAxis = this.axes[i].items.length;
       const isCurrentAxisBigger = currentAxis > layers;

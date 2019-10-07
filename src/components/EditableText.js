@@ -3,13 +3,15 @@ import React, { useState, useEffect } from "react";
 const EditableText = ({
   name,
   children,
-  onChange,
-  onDelete,
+  isActive,
   isDeletable,
   placeholder,
-  onEnter
+  onEnter,
+  onChange,
+  onDelete
 }) => {
-  const [isEditMode, setEditMode] = useState(!children);
+  const initiallyEditable = !children;
+  const [isEditMode, setEditMode] = useState(initiallyEditable);
 
   const inputRef = React.createRef();
 
@@ -18,7 +20,8 @@ const EditableText = ({
   };
 
   const handleBlur = e => {
-    if (isDeletable) toggleEdit();
+    const isNotEmpty = !isDeletable && children.length
+    if (isDeletable || isNotEmpty) toggleEdit();
     if (!e.target.value && isDeletable) onDelete();
   };
 
@@ -54,7 +57,9 @@ const EditableText = ({
     </span>
   );
 
-  return <div className="editable-item">{node}</div>;
+  return (
+    <div className={`editable-item ${isActive ? " active" : ""}`}>{node}</div>
+  );
 };
 
 export default EditableText;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import RadarChart from "./components/RadarChart";
-import GraphEdit from "./components/GraphEdit";
+import ChartControls from "./components/ChartControls";
 
 const initialData = [
   {
@@ -21,11 +21,11 @@ const initialData = [
     items: ["pdf", "html", "online hosted"],
     scope: 1
   },
-  // {
-  //   name: "hey",
-  //   items: ["pdf", "html", "online hosted"],
-  //   scope: 1
-  // },
+  {
+    name: "hey",
+    items: ["pdf", "html", "online hosted"],
+    scope: 1
+  },
   // {
   //   name: "hello",
   //   items: ["pdf", "html", "online hosted"],
@@ -137,7 +137,7 @@ function App() {
       }}
     >
       <RadarChart />
-      <GraphEdit />
+      <ChartControls />
     </GraphContext.Provider>
   );
 }
