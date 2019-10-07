@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const EditableText = ({ name, children, onChange, onDelete, isDeletable }) => {
-  const [isEditMode, setEditMode] = useState(false);
+const EditableText = ({ name, children, onChange, onDelete, isDeletable, placeholder }) => {
+  const [isEditMode, setEditMode] = useState(!children);
 
   const inputRef = React.createRef();
 
@@ -29,6 +29,7 @@ const EditableText = ({ name, children, onChange, onDelete, isDeletable }) => {
 
   const node = isEditMode ? (
     <input
+     placeholder={placeholder}
       ref={inputRef}
       type="text"
       value={children}

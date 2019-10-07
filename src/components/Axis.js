@@ -11,6 +11,7 @@ const Axis = ({ name, items, scope, onNameEdit, index }) => {
       </button>
       <h3 className="axis-title">
         <EditableText
+          placeholder="axis name"
           onChange={e => context.updateAxisName(index, e.target.value)}
         >
           {name}
@@ -19,6 +20,7 @@ const Axis = ({ name, items, scope, onNameEdit, index }) => {
       <div className="axis-items">
         {items.map((item, itemIndex) => (
           <EditableText
+            placeholder="item"
             isDeletable
             key={itemIndex}
             onDelete={e => context.deleteAxisItem(index, itemIndex)}
